@@ -3,13 +3,15 @@ from .serializer import CustomUserSerializer
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from .models import CustomUser
+from rest_framework import status
+
 
 class RegisterView(APIView):
     def post(self,request):
         serializer = CustomUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"message": serializer.data})
+        return Response({"message": serializer.data},status=status.HTTP_201_CREATED)
 
 
 class LoginView(APIView):
@@ -24,6 +26,6 @@ class LoginView(APIView):
         if not user.check_password(password):
             raise AuthenticationFailed("Incorrect password")
 
-        return Response(user)
+        return Response({"message": "You successfully logged in"}, status=status.HTTP_200_OK)
 
 
