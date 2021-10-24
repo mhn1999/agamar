@@ -1,5 +1,9 @@
+from abc import ABC
+
 from rest_framework import serializers
 from .models import CustomUser
+from django.utils.text import gettext_lazy
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -19,3 +23,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+
+class RefreshTokenSerializer(serializers.Serializer, ABC):
+    pass

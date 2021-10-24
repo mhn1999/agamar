@@ -4,16 +4,20 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from .models import CustomUser
 from rest_framework import status
-import jwt, datetime
+from rest_framework.generics import GenericAPIView
 
 
 class RegisterView(APIView):
-    def post(self,request):
+    def post(self, request):
         serializer = CustomUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({"message": serializer.data},status=status.HTTP_201_CREATED)
 
+
+class LogoutView(GenericAPIView):
+    def post(self, request, *args):
+        pass
 
 '''
 class LoginView(APIView):
