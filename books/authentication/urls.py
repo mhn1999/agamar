@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import RegisterView
+from .views import RegisterView, LogoutView
 from rest_framework_simplejwt import views as jwt_views
 
 urlpatterns = [
@@ -23,5 +23,6 @@ urlpatterns = [
     #path('login', LoginView.as_view())
     path('token', jwt_views.TokenObtainPairView.as_view()),
     path('token/refresh', jwt_views.TokenRefreshView.as_view()),
+    path('logout', LogoutView.as_view())
 
 ]
