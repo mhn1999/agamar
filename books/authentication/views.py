@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from .models import CustomUser
 from rest_framework import status
+import jwt, datetime
 
 
 class RegisterView(APIView):
@@ -14,6 +15,7 @@ class RegisterView(APIView):
         return Response({"message": serializer.data},status=status.HTTP_201_CREATED)
 
 
+'''
 class LoginView(APIView):
     def post(self, request):
         username = request.data['username']
@@ -27,5 +29,5 @@ class LoginView(APIView):
             raise AuthenticationFailed("Incorrect password")
 
         return Response({"message": "You successfully logged in"}, status=status.HTTP_200_OK)
-
+'''
 
