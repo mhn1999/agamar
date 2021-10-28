@@ -27,5 +27,4 @@ urlpatterns = [
     path('logout', views.LogoutView.as_view()),
     path('user-list/', views.userList, name="user-list"),
 	path('user-detail/<str:pk>/',views.userDetail, name="user-detail"),
-
 ]

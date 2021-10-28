@@ -21,7 +21,7 @@ def userDetail(request, pk):
 	user = CustomUser.objects.get(id=pk)
 	serializer = CustomUserSerializer(user, many=False)
 	return Response(serializer.data)
-
+    
 class RegisterView(APIView):
     def post(self, request):
         serializer = CustomUserSerializer(data=request.data)
