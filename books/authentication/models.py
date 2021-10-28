@@ -8,6 +8,9 @@ class CustomUser(AbstractUser):
     email = models.CharField(max_length=400, unique=True)
     password = models.CharField(max_length=100)
     phone_number = models.IntegerField(unique=True)
+    profile_image=models.ImageField(null=True, blank=True, upload_to='profiles/', default='profiles/user-default.png' )
     address = models.TextField()
     is_private_person = models.BooleanField(default=False)
     is_book_store = models.BooleanField(default=False)
+    def __str__(self):
+        return self.name
