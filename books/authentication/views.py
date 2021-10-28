@@ -1,3 +1,5 @@
+from re import U
+from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from .serializer import CustomUserSerializer
 from rest_framework.response import Response
@@ -6,7 +8,19 @@ from .models import CustomUser
 from rest_framework import permissions, status
 from rest_framework.generics import GenericAPIView
 from .serializer import RefreshTokenSerializer
+from rest_framework.decorators import api_view
 
+@api_view(['GET'])
+def userList(request):
+	user = CustomUser.objects.all().order_by('-id')
+	serializer = CustomUserSerializer(user, many=True)
+	return Response(serializer.data)
+
+@api_view(['GET'])
+def userDetail(request, pk):
+	user = CustomUser.objects.get(id=pk)
+	serializer = CustomUserSerializer(user, many=False)
+	return Response(serializer.data)
 
 class RegisterView(APIView):
     def post(self, request):
