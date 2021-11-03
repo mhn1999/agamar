@@ -40,6 +40,8 @@ class LogoutView(GenericAPIView):
         serializer.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class UserInfoView(APIView):
+    permissions = [permissions.IsAuthenticated]
 '''
 class LoginView(APIView):
     def post(self, request):
