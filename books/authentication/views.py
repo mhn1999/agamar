@@ -1,7 +1,7 @@
 from re import U
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
-from .serializer import CustomUserSerializer
+from .serializer import CustomUserSerializer , UserInfoSerializer
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from .models import CustomUser
@@ -42,6 +42,11 @@ class LogoutView(GenericAPIView):
 
 class UserInfoView(APIView):
     permissions = [permissions.IsAuthenticated]
+
+    def get(self, request, *args):
+        user = request.user
+        serializer = UserInfoSerializer(user, many=False)
+        return Response({"message": serializer.data})
 '''
 class LoginView(APIView):
     def post(self, request):
