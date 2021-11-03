@@ -46,7 +46,7 @@ class UserInfoView(APIView):
     def get(self, request, *args):
         user = request.user
         serializer = UserInfoSerializer(user, many=False)
-        return Response({"message": serializer.data})
+        return Response({"message": serializer.data}, status=status.HTTP_200_OK)
 '''
 class LoginView(APIView):
     def post(self, request):
