@@ -60,7 +60,7 @@ class UserUpdateInfoView(APIView):
 
 class ChangePasswordView(generics.UpdateAPIView):
     permissions = [permissions.IsAuthenticated]
-    
+
     def patch(self, request):
         user = request.user
         serializer = ChangePasswordSerializer(user, request.data, partial=True, context={'request': request})

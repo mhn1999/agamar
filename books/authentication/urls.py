@@ -28,5 +28,6 @@ urlpatterns = [
     path('user-list/', views.userList, name="user-list"),
 	path('user-detail/<str:pk>/',views.userDetail, name="user-detail"),
     path('userInfo', views.UserInfoView.as_view(), name="uesrInfo"),
-    path('update-userInfo', views.UserUpdateInfoView.as_view(), name= "update-uesrInfo"),
+    path('update-userInfo', views.UserUpdateInfoView.as_view(), name="update-uesrInfo"),
+    path('change_password', views.ChangePasswordView.as_view(), name="change_password"),
 ]
