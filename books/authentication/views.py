@@ -1,11 +1,11 @@
 from re import U
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
-from .serializer import CustomUserSerializer
+from .serializer import CustomUserSerializer, UserInfoSerializer, UserUpdateInfoSerializer, ChangePasswordSerializer
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from .models import CustomUser
-from rest_framework import permissions, status
+from rest_framework import permissions, status, generics
 from rest_framework.generics import GenericAPIView
 from .serializer import RefreshTokenSerializer
 from rest_framework.decorators import api_view
@@ -39,6 +39,34 @@ class LogoutView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class UserInfoView(APIView):
+    permissions = [permissions.IsAuthenticated]
+
+    def get(self, request, *args):
+        user = request.user
+        serializer = UserInfoSerializer(user, many=False)
+        return Response({"message": serializer.data}, status=status.HTTP_200_OK)
+
+
+class UserUpdateInfoView(APIView):
+    permissions = [permissions.IsAuthenticated]
+    def patch(self, request):
+        user = request.user
+        serializer = UserUpdateInfoSerializer(user, request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"message": serializer.data}, status=status.HTTP_205_RESET_CONTENT)
+
+class ChangePasswordView(generics.UpdateAPIView):
+    permissions = [permissions.IsAuthenticated]
+
+    def patch(self, request):
+        user = request.user
+        serializer = ChangePasswordSerializer(user, request.data, partial=True, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"message": serializer.data}, status=status.HTTP_205_RESET_CONTENT)
 
 '''
 class LoginView(APIView):
