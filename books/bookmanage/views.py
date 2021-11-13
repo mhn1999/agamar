@@ -43,6 +43,7 @@ class bookCreate(APIView):
 		return Response({"message": serializer.data})
 
 class bookUpdate(APIView):
+	permissions = [permissions.IsAuthenticated]
 	def post(self,request,pk):	
 		book = books.objects.get(id=pk)
 		serializer = bookSerializer(instance=book, data=request.data)
@@ -54,6 +55,7 @@ class bookUpdate(APIView):
 
 
 class bookDelete(APIView):
+	permissions = [permissions.IsAuthenticated]
 	def delete(self,request,pk):
 		task = books.objects.get(id=pk)
 		task.delete()

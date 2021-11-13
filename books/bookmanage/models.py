@@ -11,6 +11,7 @@ class books(models.Model):
     )
     #id = models.UUIDField(default=uuid.uuid4, unique=True,primary_key=True, editable=False)
     id = models.BigAutoField(primary_key=True)
+    price=models.CharField(max_length=200, null=True, blank=True)
     title=models.CharField(max_length=200)
     author=models.CharField(max_length=200)
     publisher=models.CharField(max_length=200)
