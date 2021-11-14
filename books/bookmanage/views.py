@@ -86,11 +86,11 @@ class bookfind_a(APIView):
 		if ("ad_price_min" in request.data):
 			ad_price_min=request.data["ad_price_min"]
 		else:
-			ad_price_min='0'
+			ad_price_min="0"
 		if ("ad_price_max" in request.data):
 			ad_price_max=request.data["ad_price_max"]
 		else:
-			ad_price_max='10000000'
+			ad_price_max="1000000"
 		if ("ad_date_to" in request.data):
 			ad_date_to=request.data["ad_date_to"]
 		else:
@@ -98,13 +98,15 @@ class bookfind_a(APIView):
 		if ("ad_date_from" in request.data):
 			ad_date_from=request.data["ad_date_from"]	
 		else:
-			ad_date_from="2020-11-13T12:12:51.295411Z"				
+			ad_date_from="2020-11-13T12:12:51.295411Z"	
 		if ("buy" in request.data):
-			s_buy=request.data["buy"]
+			s_buy=request.data["buy"]	
 		else:
-			s_buy=""
+			s_buy=""			
+					
 		book=books.objects.distinct().filter(Q(title__icontains=s_title) & Q(publisher__icontains=s_publisher) & Q(author__icontains=s_author)
-				& Q(created__range=[ad_date_from, ad_date_to]) & Q(price__range=[ad_price_min, ad_price_max]) & Q(buy__icontains=s_buy) )
+				& Q(created__range=[ad_date_from, ad_date_to]) & Q(price__range=[int(ad_price_min), int(ad_price_max)]) & Q(buy__icontains=s_buy) )
 		print(book)
 		serializer = bookSerializer(book, many=True)
-		return Response(serializer.data)		
+		return Response(serializer.data)	
+		# & Q(price__range=[ad_price_min, ad_price_max])	
