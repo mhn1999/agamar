@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    "corsheaders", 
     'authentication',
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
@@ -45,6 +46,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', 
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -135,3 +138,29 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'authentication.CustomUser'
+CORS_ALLOW_ALL_ORIGINS= True
+
+CORS_ALLOW_HEADERS = [
+"accept", 
+"accept-encoding", "authorization",
+ "content-type",
+ "dnt", 
+"origin", 
+"user-agent", 
+"x-csrftoken",
+ "x-requested-with", 
+]
+
+CORS_ALLOW_METHODS =[ 
+"DELETE",
+ "GET", 
+"OPTIONS",
+ "PATCH",
+ "POST",
+ "PUT",
+ ]
+
+CORS_ALLOWED_ORIGINS = [ 
+ "http://localhost:3000/", 
+ ]
+CORS_ALLOW_CREDENTIAL = True
