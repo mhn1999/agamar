@@ -54,7 +54,7 @@ class bookUpdate(APIView):
 	permissions = [permissions.IsAuthenticated]
 	def post(self,request,pk):	
 		book = books.objects.get(id=pk)
-		serializer = bookSerializer(instance=book, data=request.data)
+		serializer = bookSerializer(instance=book, data=request.data ,partial=True)
 
 		if serializer.is_valid():
 			serializer.save()
