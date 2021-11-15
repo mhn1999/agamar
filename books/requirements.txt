@@ -1,6 +1,6 @@
 asgiref
 Django==3.2.8
-django-cors-headers==3.2.1
+django-cors-headers==3.10.0
 djangorestframework==3.12.4
 pytz==2019.3
 sqlparse==0.3.0
