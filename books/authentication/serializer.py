@@ -94,4 +94,4 @@ class UpdateImageSerializer(serializers.ModelSerializer):
     file= Base64ImageField(required=False)
     class Meta:
         model = CustomUser
-        fields =('file')
+        fields =('file',)

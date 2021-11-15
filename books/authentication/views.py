@@ -74,7 +74,9 @@ class UpdateImageView(APIView):
 
     def patch(self, request):
         user = request.user
-        serializer = UpdateImageSerializer(user, request.data, partial=True)
+        file = request.data.get('file')
+        serializer = UpdateImageSerializer(user, data={'file': file})
+
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({"message": serializer.data}, status=status.HTTP_205_RESET_CONTENT)

@@ -32,3 +32,4 @@ urlpatterns = [
     path('change_password', views.ChangePasswordView.as_view(), name="change_password"),
     path('update-image', views.UpdateImageView.as_view(), name="update-image"),
 ]
+
