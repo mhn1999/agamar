@@ -69,6 +69,18 @@ class ChangePasswordView(generics.UpdateAPIView):
         return Response({"message": serializer.data}, status=status.HTTP_205_RESET_CONTENT)
 
 '''
+class UpdateImageView(APIView):
+    permissions = [permissions.IsAuthenticated]
+
+    def patch(self, request):
+        user = request.user
+        file = request.data.get('file')
+        serializer = UpdateImageSerializer(user, data={'file': file})
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"message": serializer.data}, status=status.HTTP_205_RESET_CONTENT)
+
 class LoginView(APIView):
     def post(self, request):
         username = request.data['username']
