@@ -4,6 +4,8 @@ from rest_framework import serializers
 from .models import CustomUser
 from django.utils.text import gettext_lazy
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+from drf_extra_fields.fields import Base64ImageField
+
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -87,3 +89,9 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         instance.set_password(validated_data['password'])
         instance.save()
         return instance
+
+class UpdateImageSerializer(serializers.ModelSerializer):
+    file= Base64ImageField(required=False)
+    class Meta:
+        model = CustomUser
+        fields =('file')
