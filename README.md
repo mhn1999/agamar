@@ -2,7 +2,7 @@
 analysis and design project (Back-End)
 
 
-run this back-end project with this commands in your cmd: (first of all you should have python, in this project we used python3.9)
+run this back-end project with these commands in your cmd: (first of all you should have python, in this project we used python3.9)
 
 py -m venv venv
 
@@ -19,6 +19,8 @@ pip install Markdown==3.3.4
 pip install djangorestframework-simplejwt==5.0.0
 
 pip install pillow==8.4.0
+
+pip install django-cors-headers==3.2.1
 
 py manage.py makemigrations
 
