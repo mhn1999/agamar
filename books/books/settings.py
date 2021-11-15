@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
+from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -43,7 +44,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
     'bookmanage.apps.BookmanageConfig',
-    'corsheaders',
+    
 ]
 
 MIDDLEWARE = [
@@ -132,6 +133,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -170,3 +177,13 @@ CORS_ALLOW_HEADERS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
+
+DEFAULTS = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10000),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=10000),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
