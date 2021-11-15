@@ -30,4 +30,5 @@ urlpatterns = [
     path('userInfo', views.UserInfoView.as_view(), name="uesrInfo"),
     path('update-userInfo', views.UserUpdateInfoView.as_view(), name="update-uesrInfo"),
     path('change_password', views.ChangePasswordView.as_view(), name="change_password"),
+    path('update-image', views.UpdateImageView.as_view(), name="update-image"),
 ]
