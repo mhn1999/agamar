@@ -18,7 +18,7 @@ class books(models.Model):
     descripsion=models.TextField(null=True, blank=True)
     created=models.DateTimeField(auto_now_add=True)
     #category=models.CharField
-    profile_image=models.ImageField(null=True, blank=True, upload_to='profiles/', default='profiles/books-default.png' )
+    profile_image=models.ImageField(null=True, blank=True, upload_to='media/profiles/', default='media/profiles/books-default.png' )
     owner=models.ForeignKey(CustomUser, on_delete=CASCADE)
     buy=models.CharField(max_length=200,choices=buy_type, null=True)
 
