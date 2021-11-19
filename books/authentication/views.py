@@ -9,6 +9,7 @@ from rest_framework import permissions, status, generics
 from rest_framework.generics import GenericAPIView
 from .serializer import RefreshTokenSerializer
 from rest_framework.decorators import api_view
+from rest_framework.parsers import MultiPartParser, FormParser
 
 @api_view(['GET'])
 def userList(request):
@@ -40,6 +41,7 @@ class LogoutView(GenericAPIView):
         serializer.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class UserInfoView(APIView):
     permissions = [permissions.IsAuthenticated]
 
@@ -51,12 +53,14 @@ class UserInfoView(APIView):
 
 class UserUpdateInfoView(APIView):
     permissions = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
     def patch(self, request):
         user = request.user
         serializer = UserUpdateInfoSerializer(user, request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({"message": serializer.data}, status=status.HTTP_205_RESET_CONTENT)
+
 
 class ChangePasswordView(generics.UpdateAPIView):
     permissions = [permissions.IsAuthenticated]
