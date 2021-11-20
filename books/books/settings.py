@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     "corsheaders", 
+    'chat',
+    'channels',
     'authentication',
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
@@ -80,6 +82,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'books.wsgi.application'
 
+ASGI_APPLICATION = "books.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
