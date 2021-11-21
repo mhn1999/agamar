@@ -84,6 +84,17 @@ WSGI_APPLICATION = 'books.wsgi.application'
 
 ASGI_APPLICATION = "books.asgi.application"
 
+CHANNEL_LAYERS = {
+    'default': {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+        #'BACKEND': 'channels_redis.core.RedisChannelLayer',
+       # 'CONFIG': {
+        #    "hosts": [('127.0.0.1', 6379)],
+        #for redis tutorial
+        #},
+    },
+}
+
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
