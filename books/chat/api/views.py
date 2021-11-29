@@ -9,6 +9,7 @@ from rest_framework.generics import (
 )
 from chat.models import Chat, Contact
 from chat.views import get_user_contact
+from .serializers import ChatSerializer
 
 
 
@@ -17,16 +18,24 @@ class ChatListView(ListAPIView):
 
 
 class ChatDetailView(RetrieveAPIView):
-    pass
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
+    permission_classes = (permissions.AllowAny,)
 
 
 class ChatCreateView(CreateAPIView):
-    pass
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class ChatUpdateView(UpdateAPIView):
-    pass
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class ChatDeleteView(DestroyAPIView):
-    pass
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
+    permission_classes = (permissions.IsAuthenticated,)
