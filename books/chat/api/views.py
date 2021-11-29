@@ -14,7 +14,8 @@ from .serializers import ChatSerializer
 
 
 class ChatListView(ListAPIView):
-    pass
+    serializer_class = ChatSerializer
+    permission_classes = (permissions.AllowAny,)
 
 
 class ChatDetailView(RetrieveAPIView):
