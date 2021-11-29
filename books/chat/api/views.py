@@ -12,10 +12,20 @@ from chat.views import get_user_contact
 from .serializers import ChatSerializer, ContactSerializer
 
 
+User = get_user_model()
+
 
 class ChatListView(ListAPIView):
     serializer_class = ChatSerializer
     permission_classes = (permissions.AllowAny,)
+
+    def get_queryset(self):
+        queryset = Chat.objects.all()
+        username = self.request.query_params.get('username', None)
+        if username is not None:
+            contact = get_user_contact(username)
+            queryset = contact.chats.all()
+        return queryset
 
 
 class ChatDetailView(RetrieveAPIView):
