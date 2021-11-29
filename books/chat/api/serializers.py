@@ -24,3 +24,8 @@ class ChatSerializer(serializers.ModelSerializer):
             chat.participants.add(contact)
         chat.save()
         return chat
+
+
+class ContactSerializer(serializers.StringRelatedField):
+    def to_internal_value(self, value):
+        return value

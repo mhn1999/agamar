@@ -9,7 +9,7 @@ from rest_framework.generics import (
 )
 from chat.models import Chat, Contact
 from chat.views import get_user_contact
-from .serializers import ChatSerializer
+from .serializers import ChatSerializer, ContactSerializer
 
 
 
