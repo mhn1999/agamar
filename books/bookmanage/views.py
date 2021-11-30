@@ -1,11 +1,11 @@
 import re
 from django.db.models.fields import NullBooleanField
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, multipartparser
 from rest_framework import permissions, status, generics
 from rest_framework import response
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, parser_classes
 from rest_framework.response import Response
 from .serializers import bookSerializer
 from django.db.models import Q
@@ -15,6 +15,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 import base64
 import io
 from PIL import Image
+from rest_framework.parsers import MultiPartParser,FormParser
 
 from .models import books 
 
@@ -43,6 +44,7 @@ def bookCreate(request):
 '''
 class bookCreate(APIView):
 	permissions = [permissions.IsAuthenticated]
+	parser_classes=[multipartparser, FormParser]
 	def post(self,request):
 		serializer = bookSerializer(data=request.data)
 
@@ -54,6 +56,7 @@ class bookCreate(APIView):
 
 class bookUpdate(APIView):
 	permissions = [permissions.IsAuthenticated]
+	parser_classes=[multipartparser, FormParser]
 	def post(self,request,pk):	
 		book = books.objects.get(id=pk)
 		serializer = bookSerializer(instance=book, data=request.data ,partial=True)
