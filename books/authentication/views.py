@@ -95,4 +95,3 @@ class LoginView(APIView):
 
         return Response({"message": "You successfully logged in"}, status=status.HTTP_200_OK)
 '''
-

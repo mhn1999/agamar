@@ -20,7 +20,11 @@ pip install djangorestframework-simplejwt==5.0.0
 
 pip install pillow==8.4.0
 
-pip install django-cors-headers==3.2.1
+python -m django-cors-headers==3.10.0
+
+python -m pip install -U channels==3.0.4
+
+python -m pip install channels-redis==docker run -p 6379:6379 -d redis:53.3.1
 
 py manage.py makemigrations
 

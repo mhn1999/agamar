@@ -1,25 +1,28 @@
 import re
 from django.db.models.fields import NullBooleanField
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, multipartparser
 from rest_framework import permissions, status, generics
+from rest_framework import response
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, parser_classes
 from rest_framework.response import Response
 from .serializers import bookSerializer
 from django.db.models import Q
+from authentication.models import CustomUser
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import base64
 import io
 from PIL import Image
+from rest_framework.parsers import MultiPartParser,FormParser
 
 from .models import books 
 
 # Create your views here.
 class bookList(APIView):
 	def get(self,request):
-		book = books.objects.all().order_by('-id')
+		book = books.objects.all().order_by('-created')
 		serializer = bookSerializer(book, many=True)
 		return Response(serializer.data)
 	
@@ -41,6 +44,7 @@ def bookCreate(request):
 '''
 class bookCreate(APIView):
 	permissions = [permissions.IsAuthenticated]
+	parser_classes=[multipartparser, FormParser]
 	def post(self,request):
 		serializer = bookSerializer(data=request.data)
 
@@ -52,6 +56,7 @@ class bookCreate(APIView):
 
 class bookUpdate(APIView):
 	permissions = [permissions.IsAuthenticated]
+	parser_classes=[multipartparser, FormParser]
 	def post(self,request,pk):	
 		book = books.objects.get(id=pk)
 		serializer = bookSerializer(instance=book, data=request.data ,partial=True)
@@ -117,15 +122,37 @@ class bookfind_a(APIView):
 			s_buy=request.data["buy"]	
 		else:
 			s_buy=""			
-		l_buy=s_buy.split(",")
-		for i in range(3-(len(l_buy))):
-			l_buy+=["3"]
+		l_buy=re.split(',|\[|\]',s_buy)
+		if l_buy[1]=='1':
+			l_buy[1]='0'
+		if l_buy[2]=='1':
+			l_buy[2]='1'
+		if l_buy[3]=='1':
+			l_buy[3]='2'
+		print(l_buy[3])
 		book=books.objects.distinct().filter(Q(title__icontains=s_title) & Q(publisher__icontains=s_publisher) & Q(author__icontains=s_author)
-				& Q(created__range=[ad_date_from, ad_date_to]) & Q(price__range=[int(ad_price_min), int(ad_price_max)]) & (Q(buy__icontains=l_buy[0]) | Q(buy__icontains=l_buy[1]) | Q(buy__icontains=l_buy[2]) ))
+				& Q(created__range=[ad_date_from, ad_date_to]) & Q(price__range=[int(ad_price_min), int(ad_price_max)]) & (Q(buy__icontains=l_buy[1]) | Q(buy__icontains=l_buy[2]) | Q(buy__icontains=l_buy[3]) ))
 		print(book)
 		serializer = bookSerializer(book, many=True)
 		return Response(serializer.data)	
-		# & Q(price__range=[ad_price_min, ad_price_max])	
+		# & Q(price__range=[ad_price_min, ad_price_max])
+# adding and getting favourites
+class add_to_favourites(APIView):
+	permissions = [permissions.IsAuthenticated]
+	def post(self,request,pk):	
+		book = books.objects.get(id=pk)
+		user=request.user
+		user.favourite.add(book)
+		return Response({"message":"item succesgully added to favourites"})
+
+class get_favourites(APIView):
+	permissions = [permissions.IsAuthenticated]
+	def get(self,request):
+		user=request.user
+		book = user.favourite.all()
+		serializer = bookSerializer(book, many=True)
+		return Response(serializer.data)	
+
 '''
 class bookimage(APIView):
 	#permissions = [permissions.IsAuthenticated]

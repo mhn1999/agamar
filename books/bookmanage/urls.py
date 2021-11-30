@@ -11,5 +11,8 @@ urlpatterns = [
 	
 	path('book-find/<str:pk>/', views.bookfind.as_view(), name="book-find"),
 	path('book-find-a/', views.bookfind_a.as_view(), name="book-find-a"),
+	#add to favourite and get favourites
+	path('add-to-favourites/<str:pk>/',views.add_to_favourites.as_view(),name="add-to-favourites"),
+	path('favourites/',views.get_favourites.as_view(),name="get-favourites")
 
 ]
