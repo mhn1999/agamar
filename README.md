@@ -20,6 +20,10 @@ pip install djangorestframework-simplejwt==5.0.0
 
 pip install pillow==8.4.0
 
+pip install channels==3.0.4
+
+pip install django-cors-headers==3.10.0
+
 py manage.py makemigrations
 
 py manage.py migrate
