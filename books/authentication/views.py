@@ -86,7 +86,10 @@ class ChangePasswordView(generics.UpdateAPIView):
 
 
 class PublicProfile(APIView):
-    pass
+    def get(self, request, pk):
+        public_user_info = CustomUser.objects.get(username=pk)
+        serializer = PublicProfile(public_user_info, many=False)
+        return Response({'message': serializer.data})
 
 '''
 class UpdateImageView(APIView):
