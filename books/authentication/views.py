@@ -10,6 +10,9 @@ from rest_framework.generics import GenericAPIView
 from .serializer import RefreshTokenSerializer
 from rest_framework.decorators import api_view
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+
+
 
 @api_view(['GET'])
 def userList(request):
@@ -17,18 +20,28 @@ def userList(request):
 	serializer = CustomUserSerializer(user, many=True)
 	return Response(serializer.data)
 
+
 @api_view(['GET'])
 def userDetail(request, pk):
 	user = CustomUser.objects.get(id=pk)
 	serializer = CustomUserSerializer(user, many=False)
 	return Response(serializer.data)
-    
+
+
 class RegisterView(APIView):
     def post(self, request):
         serializer = CustomUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"message": serializer.data},status=status.HTTP_201_CREATED)
+        user_data = serializer.data
+        user = CustomUser.objects.get(id=user_data.get('id'))
+        access_tk = str(AccessToken.for_user(user))
+        refresh_tk = str(RefreshToken.for_user(user))
+        return Response({"message": serializer.data,
+                         "access token": access_tk,
+                         "refresh token": refresh_tk},
+                         status=status.HTTP_201_CREATED)
+
 
 
 class LogoutView(GenericAPIView):
