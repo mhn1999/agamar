@@ -91,16 +91,16 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         return instance
 
 
-class PublicProfile(serializers.ModelSerializer):
+class PublicProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'username', 'email', 'password', 'name', 'phone_number', 'address',
                   'is_private_person', 'is_book_store', 'profile_image']
-        extra_kwargs = {
-            'password': {'write_only': True},
-            'id': {'write_only': True},
-            'phone_number': {'write_only': True},
-        }
+        # extra_kwargs = {
+        #     'password': {'write_only': True},
+        #     'id': {'write_only': True},
+        #     'phone_number': {'write_only': True},
+        # }
 
 '''''
 class UpdateImageSerializer(serializers.ModelSerializer):
