@@ -94,7 +94,7 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
 class PublicProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'email', 'password', 'name', 'phone_number', 'address',
+        fields = ['username', 'email',  'name', 'address',
                   'is_private_person', 'is_book_store', 'profile_image']
         # extra_kwargs = {
         #     'password': {'write_only': True},
