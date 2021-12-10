@@ -1,7 +1,7 @@
 from re import U
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
-from .serializer import CustomUserSerializer, UserInfoSerializer, UserUpdateInfoSerializer, ChangePasswordSerializer
+from .serializer import CustomUserSerializer, UserInfoSerializer, UserUpdateInfoSerializer, ChangePasswordSerializer,PublicProfileSerializer
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from .models import CustomUser
@@ -11,6 +11,7 @@ from .serializer import RefreshTokenSerializer
 from rest_framework.decorators import api_view
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+
 
 
 
@@ -82,6 +83,13 @@ class ChangePasswordView(generics.UpdateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({"message": serializer.data}, status=status.HTTP_205_RESET_CONTENT)
+
+
+class PublicProfileView(APIView):
+    def get(self, request, pk=None):
+        public_user_info = CustomUser.objects.get(username=pk)
+        serializer = PublicProfileSerializer(public_user_info, many=False)
+        return Response({'message': serializer.data})
 
 '''
 class UpdateImageView(APIView):

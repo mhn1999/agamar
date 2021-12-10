@@ -89,6 +89,19 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         instance.set_password(validated_data['password'])
         instance.save()
         return instance
+
+
+class PublicProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'email',  'name', 'address',
+                  'is_private_person', 'is_book_store', 'profile_image']
+        # extra_kwargs = {
+        #     'password': {'write_only': True},
+        #     'id': {'write_only': True},
+        #     'phone_number': {'write_only': True},
+        # }
+
 '''''
 class UpdateImageSerializer(serializers.ModelSerializer):
     file= Base64ImageField(required=False)
