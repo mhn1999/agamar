@@ -90,7 +90,6 @@ class PublicProfileView(APIView):
         public_user_info = CustomUser.objects.get(username=pk)
         serializer = PublicProfileSerializer(public_user_info, many=False)
         return Response({'message': serializer.data})
-
 '''
 class UpdateImageView(APIView):
     permissions = [permissions.IsAuthenticated]

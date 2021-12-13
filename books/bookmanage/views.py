@@ -150,7 +150,7 @@ class add_to_buylist(APIView):
 	def post(self,request,pk):	
 		book = books.objects.get(id=pk)
 		user=request.user
-		user.books_goten.add(book)
+		user.books_ordered.add(book)
 		return Response({"message":"item succesgully added to basket"})
 
 class get_favourites(APIView):
