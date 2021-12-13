@@ -44,7 +44,7 @@ def bookCreate(request):
 '''
 class bookCreate(APIView):
 	permissions = [permissions.IsAuthenticated]
-	parser_classes=[multipartparser, FormParser]
+	parser_classes=[MultiPartParser, FormParser]
 	def post(self,request):
 		serializer = bookSerializer(data=request.data)
 
@@ -56,7 +56,7 @@ class bookCreate(APIView):
 
 class bookUpdate(APIView):
 	permissions = [permissions.IsAuthenticated]
-	parser_classes=[multipartparser, FormParser]
+	parser_classes=[MultiPartParser, FormParser]
 	def post(self,request,pk):	
 		book = books.objects.get(id=pk)
 		serializer = bookSerializer(instance=book, data=request.data ,partial=True)

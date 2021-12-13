@@ -9,6 +9,7 @@ class books(models.Model):
         ('1','rent'),
         ('2','gift'),
     )
+    book_category=(('0','داستان و رمان'), ('1','ادبیات'),('2') )
     #id = models.UUIDField(default=uuid.uuid4, unique=True,primary_key=True, editable=False)
     id = models.BigAutoField(primary_key=True)
     price=models.IntegerField(null=True, blank=True)
