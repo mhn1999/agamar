@@ -13,5 +13,6 @@ class CustomUser(AbstractUser):
     is_private_person = models.BooleanField(default=False)
     is_book_store = models.BooleanField(default=False)
     favourite=models.ManyToManyField('bookmanage.books')
+    books_goten=models.ManyToManyField('bookmanage.books')
     def __str__(self):
         return self.name
