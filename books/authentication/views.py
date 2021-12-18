@@ -38,8 +38,8 @@ class RegisterView(APIView):
         access_tk = str(AccessToken.for_user(user))
         refresh_tk = str(RefreshToken.for_user(user))
         return Response({"message": serializer.data,
-                         "access token": access_tk,
-                         "refresh token": refresh_tk},
+                         "access": access_tk,
+                         "refresh": refresh_tk},
                          status=status.HTTP_201_CREATED)
 
 
