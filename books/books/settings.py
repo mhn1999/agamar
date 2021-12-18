@@ -196,7 +196,6 @@ CORS_ALLOW_HEADERS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-
 DEFAULTS = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10000),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -206,3 +205,10 @@ DEFAULTS = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=10000),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
+}
+
+
