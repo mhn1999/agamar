@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-vv)xq*8sjv$vx99lv@f7thtp83re@m8co_z51rju4uo(72x@gc
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'ubuntu@194.225.229.242',
+    '127.0.0.1',
+    '94.225.229.242',
 ]
 
 
@@ -200,11 +201,13 @@ CORS_ALLOW_CREDENTIALS = True
 
 
 DEFAULTS = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10000),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
+}
 
-    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
-    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=10000),
-    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
 }
