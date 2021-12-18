@@ -13,13 +13,15 @@ class Contact(models.Model):
 
 
 class Message(models.Model):
+    id = models.BigAutoField(primary_key=True)
     contact = models.ForeignKey(
         Contact, related_name='messages', on_delete=models.CASCADE)
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    reply=models.OneToOneField('self', null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.contact.user.username
+        return self.content
 
 
 class Chat(models.Model):

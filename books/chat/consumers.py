@@ -1,9 +1,12 @@
+from asyncio.windows_events import NULL
 from django.contrib.auth import get_user_model
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 import json
+
+from rest_framework.fields import NullBooleanField
 from .models import Message, Chat, Contact
-from .views import get_last_10_messages, get_user_contact, get_current_chat
+from .views import get_last_10_messages, get_reply_message, get_user_contact, get_current_chat
 
 User = get_user_model()
 
@@ -21,7 +24,13 @@ class ChatConsumer(WebsocketConsumer):
 
     def new_message(self, data):
         user_contact = get_user_contact(data['from'])
-        message = Message.objects.create(
+        if 'reply' in data:
+            message = Message.objects.create(
+            contact=user_contact,
+            reply=get_reply_message(data['chatId'],data['reply']),
+            content=data['message'])
+        else:
+            message = Message.objects.create(
             contact=user_contact,
             content=data['message'])
         current_chat = get_current_chat(data['chatId'])
@@ -44,7 +53,8 @@ class ChatConsumer(WebsocketConsumer):
             'id': message.id,
             'author': message.contact.user.username,
             'content': message.content,
-            'timestamp': str(message.timestamp)
+            'timestamp': str(message.timestamp),
+            'reply':message.reply
         }
 
     commands = {
