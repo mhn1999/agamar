@@ -144,6 +144,14 @@ class add_to_favourites(APIView):
 		user=request.user
 		user.favourite.add(book)
 		return Response({"message":"item succesgully added to favourites"})
+#ordering books
+class add_to_buylist(APIView):
+	permissions = [permissions.IsAuthenticated]
+	def post(self,request,pk):	
+		book = books.objects.get(id=pk)
+		user=request.user
+		user.books_ordered.add(book)
+		return Response({"message":"item succesgully added to basket"})
 
 class get_favourites(APIView):
 	permissions = [permissions.IsAuthenticated]
