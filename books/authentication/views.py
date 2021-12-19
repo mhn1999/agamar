@@ -32,8 +32,9 @@ def userDetail(request, pk):
 class online(APIView):
     permissions = [permissions.IsAuthenticated]
     def post(self,request):
-        serializer=CustomUserOnlineSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        user=request.user
+        serializer=CustomUserOnlineSerializer(user,data=request.data)
+        serializer.is_valid()
         serializer.save()
         return Response({"message": serializer.data})
 
