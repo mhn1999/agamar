@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils import tree
 from authentication.models import CustomUser
 User = get_user_model()
 
@@ -19,6 +20,7 @@ class Message(models.Model):
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     reply=models.OneToOneField('self', null=True, blank=True, on_delete=models.CASCADE)
+    flag=models.BooleanField(default=False)
 
     def __str__(self):
         return self.content
