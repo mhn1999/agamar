@@ -50,6 +50,12 @@ class RegisterView(APIView):
         user = CustomUser.objects.get(id=user_data.get('id'))
         access_tk = str(AccessToken.for_user(user))
         refresh_tk = str(RefreshToken.for_user(user))
+        subject = 'welcome to GFG AGAMAR'
+        message = f'Hi {user_data.username}, thank you for registering.'
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [user_data.email, ]
+        send_mail(subject, message, email_from, recipient_list)
+
         return Response({"message": serializer.data,
                          "access": access_tk,
                          "refresh": refresh_tk},
