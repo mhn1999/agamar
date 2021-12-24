@@ -11,6 +11,9 @@ from .serializer import RefreshTokenSerializer
 from rest_framework.decorators import api_view
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from django.conf import settings
+from django.core.mail import send_mail
+
 
 
 
