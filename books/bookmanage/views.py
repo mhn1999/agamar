@@ -46,7 +46,7 @@ class bookCreate(APIView):
 	permissions = [permissions.IsAuthenticated]
 	parser_classes=[MultiPartParser, FormParser]
 	def post(self,request):
-		serializer = bookSerializer(data=request.data)
+		serializer = bookSerializer(data=request.data, partial=True)
 
 		if serializer.is_valid():
 			serializer.save()
