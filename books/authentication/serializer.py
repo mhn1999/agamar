@@ -51,7 +51,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'username', 'email', 'password', 'name', 'phone_number', 'address',
-                  'is_private_person', 'is_book_store', 'profile_image','date_joined','books_goten']
+                  'is_private_person', 'is_book_store', 'profile_image','date_joined','books_ordered']
 
 
 class UserUpdateInfoSerializer(serializers.ModelSerializer):
