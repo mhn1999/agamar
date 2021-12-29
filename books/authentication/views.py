@@ -11,6 +11,10 @@ from .serializer import RefreshTokenSerializer
 from rest_framework.decorators import api_view
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from django.conf import settings
+from django.core.mail import send_mail
+from rest_framework.renderers import TemplateHTMLRenderer
+
 
 
 
@@ -39,6 +43,7 @@ class online(APIView):
         return Response({"message": serializer.data})
 
 class RegisterView(APIView):
+
     def post(self, request):
         serializer = CustomUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -47,6 +52,21 @@ class RegisterView(APIView):
         user = CustomUser.objects.get(id=user_data.get('id'))
         access_tk = str(AccessToken.for_user(user))
         refresh_tk = str(RefreshToken.for_user(user))
+
+        html_text = """ 
+<!DOCTYPE html>
+<html>
+    <body>
+        <p><a href="https://Localhost:3000/email-verified-successfully">click on me:)</a></p>
+    </body>
+</html>
+         """
+        subject = 'welcome to AGAMAR'
+        message = f'Hi {user.username}, thank you for registering. please click on link below: {html_text}'
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [user.email, ]
+        send_mail(subject=subject, html_message=message, from_email=email_from, recipient_list=recipient_list, message=" ")
+
         return Response({"message": serializer.data,
                          "access": access_tk,
                          "refresh": refresh_tk},
