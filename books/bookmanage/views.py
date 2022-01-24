@@ -44,9 +44,9 @@ def bookCreate(request):
 '''
 class bookCreate(APIView):
 	permissions = [permissions.IsAuthenticated]
-	parser_classes=[multipartparser, FormParser]
+	parser_classes=[MultiPartParser, FormParser]
 	def post(self,request):
-		serializer = bookSerializer(data=request.data)
+		serializer = bookSerializer(data=request.data, partial=True)
 
 		if serializer.is_valid():
 			serializer.save()
@@ -56,7 +56,7 @@ class bookCreate(APIView):
 
 class bookUpdate(APIView):
 	permissions = [permissions.IsAuthenticated]
-	parser_classes=[multipartparser, FormParser]
+	parser_classes=[MultiPartParser, FormParser]
 	def post(self,request,pk):	
 		book = books.objects.get(id=pk)
 		serializer = bookSerializer(instance=book, data=request.data ,partial=True)
@@ -129,10 +129,22 @@ class bookfind_a(APIView):
 			l_buy[2]='1'
 		if l_buy[3]=='1':
 			l_buy[3]='2'
-		print(l_buy[3])
+
+		if "category" in request.data:
+			category_buy=request.data["category"]
+			for i in category_buy:
+				if i==category_buy[0]:
+					Qbook=books.objects.distinct().filter(category__exact=i)
+				else:
+					Qbook= Qbook | books.objects.distinct().filter(category__exact=i)
+			print(Qbook)
+		else:
+			Qbook=[]
 		book=books.objects.distinct().filter(Q(title__icontains=s_title) & Q(publisher__icontains=s_publisher) & Q(author__icontains=s_author)
 				& Q(created__range=[ad_date_from, ad_date_to]) & Q(price__range=[int(ad_price_min), int(ad_price_max)]) & (Q(buy__icontains=l_buy[1]) | Q(buy__icontains=l_buy[2]) | Q(buy__icontains=l_buy[3]) ))
-		print(book)
+		if Qbook !=[]:
+			book= book & Qbook
+		#print(book)
 		serializer = bookSerializer(book, many=True)
 		return Response(serializer.data)	
 		# & Q(price__range=[ad_price_min, ad_price_max])
@@ -144,6 +156,21 @@ class add_to_favourites(APIView):
 		user=request.user
 		user.favourite.add(book)
 		return Response({"message":"item succesgully added to favourites"})
+#ordering books
+class add_to_buylist(APIView):
+	permissions = [permissions.IsAuthenticated]
+	def post(self,request,pk):	
+		book = books.objects.get(id=pk)
+		user=request.user
+		user.books_ordered.add(book)
+		return Response({"message":"item succesgully added to basket"})
+class get_buylist(APIView):
+	permissions = [permissions.IsAuthenticated]
+	def get(self,request):
+		user=request.user
+		book = user.books_ordered.all()
+		serializer = bookSerializer(book, many=True)
+		return Response(serializer.data)	
 
 class get_favourites(APIView):
 	permissions = [permissions.IsAuthenticated]
