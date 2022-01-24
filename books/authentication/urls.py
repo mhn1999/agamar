@@ -34,5 +34,7 @@ urlpatterns = [
     path('public-profile/<str:pk>', views.PublicProfileView.as_view(), name="public-profile"),
     #online
     path('online', views.online.as_view(), name="online"),
+    #email registered
+    path('email-registered',views.registered_email,name='email-registered')
 ]
 
