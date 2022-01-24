@@ -12,7 +12,7 @@ services:
     command: >
       bash -c "python manage.py migrate &&
               python manage.py collectstatic --noinput --clear &&
-              uwsgi --ini uwsgi.ini"
+              uwsgi --socket :8000 --module books.wsgi --master"
     ports:
       - 8000:8000
 
