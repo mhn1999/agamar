@@ -164,6 +164,13 @@ class add_to_buylist(APIView):
 		user=request.user
 		user.books_ordered.add(book)
 		return Response({"message":"item succesgully added to basket"})
+class get_buylist(APIView):
+	permissions = [permissions.IsAuthenticated]
+	def get(self,request):
+		user=request.user
+		book = user.books_ordered.all()
+		serializer = bookSerializer(book, many=True)
+		return Response(serializer.data)	
 
 class get_favourites(APIView):
 	permissions = [permissions.IsAuthenticated]

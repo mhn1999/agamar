@@ -14,5 +14,6 @@ urlpatterns = [
 	#add to favourite and get favourites
 	path('add-to-favourites/<str:pk>/',views.add_to_favourites.as_view(),name="add-to-favourites"),
 	path('favourites/',views.get_favourites.as_view(),name="get-favourites"),
-	path('buy-book/<str:pk>/',views.add_to_buylist.as_view(),name="add_to_buylist")
+	path('buy-book/<str:pk>/',views.add_to_buylist.as_view(),name="add_to_buylist"),
+	path('buy-list/',views.get_buylist.as_view(),name="get_buylist")
 ]
