@@ -1,16 +1,21 @@
 from re import U
 from django.contrib.auth.models import User
+from django.shortcuts import render
 from rest_framework.views import APIView
-from .serializer import CustomUserSerializer, UserInfoSerializer, UserUpdateInfoSerializer, ChangePasswordSerializer,PublicProfileSerializer
+from .serializer import CustomUserOnlineSerializer, CustomUserSerializer, UserInfoSerializer, UserUpdateInfoSerializer, ChangePasswordSerializer,PublicProfileSerializer
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from .models import CustomUser
-from rest_framework import permissions, status, generics
+from rest_framework import permissions, serializers, status, generics
 from rest_framework.generics import GenericAPIView
 from .serializer import RefreshTokenSerializer
 from rest_framework.decorators import api_view
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from django.conf import settings
+from django.core.mail import send_mail
+from rest_framework.renderers import TemplateHTMLRenderer
+
 
 
 
@@ -28,8 +33,18 @@ def userDetail(request, pk):
 	serializer = CustomUserSerializer(user, many=False)
 	return Response(serializer.data)
 
+#online-offline
+class online(APIView):
+    permissions = [permissions.IsAuthenticated]
+    def post(self,request):
+        user=request.user
+        serializer=CustomUserOnlineSerializer(user,data=request.data)
+        serializer.is_valid()
+        serializer.save()
+        return Response({"message": serializer.data})
 
 class RegisterView(APIView):
+
     def post(self, request):
         serializer = CustomUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -38,9 +53,16 @@ class RegisterView(APIView):
         user = CustomUser.objects.get(id=user_data.get('id'))
         access_tk = str(AccessToken.for_user(user))
         refresh_tk = str(RefreshToken.for_user(user))
+
+        subject = 'welcome to AGAMAR'
+        message = f'Hi {user.username}, thank you for registering. please click on link below: http://127.0.0.1:8000/api/email-registered'
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [user.email]
+        send_mail(subject, message, email_from,recipient_list, fail_silently=False)
+
         return Response({"message": serializer.data,
-                         "access token": access_tk,
-                         "refresh token": refresh_tk},
+                         "access": access_tk,
+                         "refresh": refresh_tk},
                          status=status.HTTP_201_CREATED)
 
 
@@ -90,7 +112,8 @@ class PublicProfileView(APIView):
         public_user_info = CustomUser.objects.get(username=pk)
         serializer = PublicProfileSerializer(public_user_info, many=False)
         return Response({'message': serializer.data})
-
+def registered_email(request):
+    return render(request,'email-registered.html')
 '''
 class UpdateImageView(APIView):
     permissions = [permissions.IsAuthenticated]

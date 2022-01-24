@@ -9,6 +9,18 @@ class books(models.Model):
         ('1','rent'),
         ('2','gift'),
     )
+    category_choices =(
+    ("1", "داستان"),
+    ("2", "ادبیات"),
+    ("3", "هنر"),
+    ("4", "روانشناسی"),
+    ("5", "علوم اجتماعی و سیاسی"),
+    ("6", "دین و مذهب"),
+    ("7", "فلسفه و عرفان"),
+    ("8", "تاریخ"),
+    ("9", "کودک و نوجوان"),
+    ("10", "دانشگاهی"),
+)
     #id = models.UUIDField(default=uuid.uuid4, unique=True,primary_key=True, editable=False)
     id = models.BigAutoField(primary_key=True)
     price=models.IntegerField(null=True, blank=True)
@@ -19,8 +31,9 @@ class books(models.Model):
     created=models.DateTimeField(auto_now_add=True)
     #category=models.CharField
     profile_image=models.ImageField(null=True, blank=True, upload_to='media/profiles/', default='media/profiles/books-default.png' )
-    owner=models.ForeignKey(CustomUser, on_delete=CASCADE)
+    owner=models.ForeignKey(CustomUser,to_field='username', on_delete=CASCADE,default='mak')
     buy=models.CharField(max_length=200,choices=buy_type, null=True)
+    category=models.CharField(max_length=200, choices=category_choices, null=True)
 
     def __str__(self):
         return self.title

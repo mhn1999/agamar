@@ -12,6 +12,8 @@ class CustomUser(AbstractUser):
     address = models.TextField()
     is_private_person = models.BooleanField(default=False)
     is_book_store = models.BooleanField(default=False)
-    favourite=models.ManyToManyField('bookmanage.books')
+    favourite=models.ManyToManyField('bookmanage.books', related_name='favourote')
+    books_ordered=models.ManyToManyField('bookmanage.books', related_name='books_ordered')
+    online=models.CharField(max_length=200, choices=(('0','offline'),('1','online')),default=('0','offline'))
     def __str__(self):
         return self.name
