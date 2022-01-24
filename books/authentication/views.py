@@ -1,5 +1,6 @@
 from re import U
 from django.contrib.auth.models import User
+from django.shortcuts import render
 from rest_framework.views import APIView
 from .serializer import CustomUserOnlineSerializer, CustomUserSerializer, UserInfoSerializer, UserUpdateInfoSerializer, ChangePasswordSerializer,PublicProfileSerializer
 from rest_framework.response import Response
@@ -53,19 +54,11 @@ class RegisterView(APIView):
         access_tk = str(AccessToken.for_user(user))
         refresh_tk = str(RefreshToken.for_user(user))
 
-        html_text = """ 
-<!DOCTYPE html>
-<html>
-    <body>
-        <p><a href="https://Localhost:3000/email-verified-successfully">click on me:)</a></p>
-    </body>
-</html>
-         """
         subject = 'welcome to AGAMAR'
-        message = f'Hi {user.username}, thank you for registering. please click on link below: {html_text}'
+        message = f'Hi {user.username}, thank you for registering. please click on link below: http://127.0.0.1:8000/api/email-registered'
         email_from = settings.EMAIL_HOST_USER
-        recipient_list = [user.email, ]
-        send_mail(subject=subject, html_message=message, from_email=email_from, recipient_list=recipient_list, message=" ")
+        recipient_list = [user.email]
+        send_mail(subject, message, email_from,recipient_list, fail_silently=False)
 
         return Response({"message": serializer.data,
                          "access": access_tk,
@@ -119,6 +112,8 @@ class PublicProfileView(APIView):
         public_user_info = CustomUser.objects.get(username=pk)
         serializer = PublicProfileSerializer(public_user_info, many=False)
         return Response({'message': serializer.data})
+def registered_email(request):
+    return render(request,'email-registered.html')
 '''
 class UpdateImageView(APIView):
     permissions = [permissions.IsAuthenticated]
