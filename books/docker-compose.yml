@@ -1,0 +1,26 @@
+
+version: '3.8'
+
+volumes:
+  static_data:
+services:
+  django:
+    volumes:
+      - static_data:/static
+
+    build: .
+    command: >
+      bash -c "python manage.py migrate &&
+              python manage.py collectstatic --noinput --clear &&
+              uwsgi --socket :8000 --module books.wsgi --master"
+    ports:
+      - 8000:8000
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    depends_on:
+      - django
+    volumes:
+      - static_data:/static
