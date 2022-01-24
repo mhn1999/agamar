@@ -1,4 +1,5 @@
 from re import U
+from unittest.result import failfast
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from .serializer import CustomUserOnlineSerializer, CustomUserSerializer, UserInfoSerializer, UserUpdateInfoSerializer, ChangePasswordSerializer,PublicProfileSerializer
@@ -33,7 +34,7 @@ def userDetail(request, pk):
 	return Response(serializer.data)
 
 #online-offline
-class online(APIView):
+class online(APIView): 
     permissions = [permissions.IsAuthenticated]
     def post(self,request):
         user=request.user
@@ -64,8 +65,8 @@ class RegisterView(APIView):
         subject = 'welcome to AGAMAR'
         message = f'Hi {user.username}, thank you for registering. please click on link below: {html_text}'
         email_from = settings.EMAIL_HOST_USER
-        recipient_list = [user.email, ]
-        send_mail(subject=subject, html_message=message, from_email=email_from, recipient_list=recipient_list, message=" ")
+        recipient_list = [user.email]
+        send_mail(subject=subject, html_message=message, from_email=email_from, recipient_list=recipient_list, failfast=False)
 
         return Response({"message": serializer.data,
                          "access": access_tk,
